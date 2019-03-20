@@ -29,4 +29,10 @@ UserSchema.pre('save', async function (next) {
   this.password = await bcryptjs.hash(this.password, 8)
 })
 
+UserSchema.methods = {
+  compareHash (password) {
+    return bcryptjs.compare(password, this.password)
+  }
+}
+
 module.exports = mongoose.model('User', UserSchema)
