@@ -21,7 +21,7 @@ routes.put('/ads/:id', controllers.AdController.update)
 routes.delete('/ads/:id', controllers.AdController.destroy)
 
 /**
- * Puerchase
+ * Purchase
  */
 routes.post('/purchase', controllers.PurchaseController.store)
 
