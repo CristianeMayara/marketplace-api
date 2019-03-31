@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const validate = require('express-validation')
+const Youch = require('youch')
 const databaseConfig = require('./config/database')
 
 class App {
@@ -30,9 +31,15 @@ class App {
   }
 
   exception () {
-    this.express.use((err, req, res, next) => {
+    this.express.use(async (err, req, res, next) => {
       if (err instanceof validate.ValidationError) {
         return res.status(err.status).json(err)
+      }
+
+      if (process.env.NODE_ENV !== 'production') {
+        const youch = new Youch(err)
+
+        return res.json(await youch.toJSON())
       }
 
       return res
