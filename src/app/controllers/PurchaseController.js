@@ -9,6 +9,13 @@ class PurchaseController {
     const { ad, content } = req.body
 
     const purchaseAd = await Ad.findById(ad).populate('author')
+
+    if (purchaseAd.purchasedBy) {
+      return res
+        .status(400)
+        .json({ error: 'This product has already been sold.' })
+    }
+
     const user = await User.findById(req.userId)
 
     const purchase = await Purchase.create({ ad })
